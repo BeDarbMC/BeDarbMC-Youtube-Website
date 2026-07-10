@@ -35,9 +35,54 @@
         <br><br><br>
         <p>If you have any video suggestions or stuff like that, you can put it in the comments of my videos.</p>
         <br><br><br><br><br>
-        <
+
+        <h2>MOST RECENT VIDEO:</h2>
+
+        <!-- 1. REQUIRED TARGET ELEMENT -->
+            <div id="latest-video" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%;">
+                Loading...
+            </div>
     </div> <!-- end of center div-->
 
+    <script>
+    // 3. REQUIRED CREDENTIALS (Insert your details here)
+        const API_KEY = 'AIzaSyA9CmlN1BvwJPgyJm6PfjVKcTZLQ_8GKaY';
+        const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; // Must start with 'UU'
+       const URL = `https://googleapis.com{PLAYLIST_ID}&key=${API_KEY}`;
+
+        async function fetchLatestVideo() {
+            try {
+                const response = await fetch(URL);
+               if (!response.ok) throw new Error('Network response was not ok');
+            
+                const data = await response.json();
+            
+                if (data.items && data.items.length > 0) {
+                    // 4. REQUIRED API PATH TO GET THE VIDEO ID
+                    const videoId = data.items[0].snippet.resourceId.videoId;
+                
+                    // Inject the player iframe with styling to make it responsive
+                  document.getElementById('latest-video').innerHTML = `
+                        <iframe 
+                            src="https://youtube.com{videoId}" 
+                            style="position:absolute; top:0; left:0; width:100%; height:100%;" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                           allowfullscreen>
+                        </iframe>
+                    `;
+                } else {
+                   document.getElementById('latest-video').innerText = 'No videos found.';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+               document.getElementById('latest-video').innerText = 'Failed to load video.';
+            }
+        }
+
+        // Run the function immediately when the script executes
+        fetchLatestVideo();
+    </script>
 
 </body>
 
