@@ -1,0 +1,149 @@
+/*This is my SSB Contact Web Page Project using Eric Meyer's reset at the top of my page -- your CSS starts on line 56 */
+
+
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+/* ---------- This is the beginning of my SSB Contact Web Page Project ------------ */
+
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-image: url("images/Background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.center {
+    width: 800px;
+	padding: 2%;
+    margin: 100px auto;
+ 	background: rgba(0, 150, 178, .75); /*this uses opacity of 75% for the background color*/
+	text-align: center;
+	border: 4px solid #000075;
+}
+
+.banana {
+	font-size: 4em;
+	color: #ffff00;
+}
+   
+#logo {
+    margin-bottom: 16px;
+	border: 3px solid #000075;
+	text-align: center;
+}
+
+h1 {
+	/* FONT-FAMILY GOES HERE CHOOSE FROM TYPEKIT OR GOOGLE FONTS */
+	font-size: 2em;
+    margin: 0px auto 10px auto;
+    color: #2bff00;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto;
+  	
+  	font-style: normal;
+}
+
+h2 {
+	 /* FONT-FAMILY GOES HERE CHOOSE FROM TYPEKIT OR GOOGLE FONTS */
+	font-size: 1.5em;
+    line-height: 1.4;
+    color: #2bff00;
+    padding: 0px 0px;
+    margin: 0px auto 25px auto;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto;
+  	font-style: normal;
+}
+
+h3 {
+	color: #2bff00;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto;  	
+  	font-style: normal;
+}
+
+h4 {
+	color: #2bff00;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto;
+  	font-style: normal;
+}
+
+h5 {
+	color: #2bff00;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto;
+  	font-style: normal;
+}
+
+h6 {
+	color: #2bff00;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto; 	
+  	font-style: normal;
+}
+
+p {
+	/* FONT-FAMILY GOES HERE CHOOSE FROM TYPEKIT OR GOOGLE FONTS */
+	font-size: 1.2em;
+    line-height: 1.6;
+    color: #fff;
+	font-family: "Google Sans", sans-serif;
+  	font-optical-sizing: auto; 	
+  	font-style: normal;
+}
