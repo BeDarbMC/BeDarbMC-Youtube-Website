@@ -51,7 +51,7 @@ async function fetchLatestVideo() {
                 const totalSeconds = parseISO8601Duration(durationRaw);
                 
                 // YouTube strictly classifies content 60 seconds or less as a Short.
-                const isShort = totalSeconds <= 200;
+                const isShort = totalSeconds <= 180;
 
                 if (!isShort) {
                     targetVideoId = vId;
