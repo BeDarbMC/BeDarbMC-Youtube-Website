@@ -1,0 +1,17 @@
+name: Run Script with Secret
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Application Step
+        env:
+          # This maps your GitHub secret to an environment variable your app can read
+        YOUTUBE_API_KEY: ${{ secrets.GOOGLE_YOUTUBE_API_KEY }} 
+        run: |
+          python my_script.py
