@@ -2,54 +2,62 @@ const fs = require('fs');
 
 const GOOGLE_YOUTUBE_API_KEY = process.env.GOOGLE_YOUTUBE_API_KEY;
 const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
-// Fetch 5 videos instead of 1 to ensure we find a long-form video if you uploaded Shorts recently
-const URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=8&key=${GOOGLE_YOUTUBE_API_KEY}`;
 
-async function isShort(videoId) {
-    try {
-        // We send a quick request to the standard Shorts URL. 
-        // If it redirects or fails to find a Short, YouTube treats it differently.
-        const response = await fetch(`https://www.youtube.com/shorts/${videoId}`, { method: 'HEAD' });
-        // YouTube redirects standard videos away from the /shorts/ URL
-        return !response.url.includes('/shorts/');
-    } catch (error) {
-        return false;
-    }
-}
+// 1. Fetch the last 10 videos from your upload playlist
+const PLAYLIST_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=10&key=${GOOGLE_YOUTUBE_API_KEY}`;
 
 async function fetchLatestVideo() {
     try {
-        const response = await fetch(URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const playlistResponse = await fetch(PLAYLIST_URL);
+        if (!playlistResponse.ok) throw new Error(`Playlist API error! status: ${playlistResponse.status}`);
+        const playlistData = await playlistResponse.json();
         
-        const data = await response.json();
-        
-        if (data.items && data.items.length > 0) {
-            let targetVideoId = null;
-
-            // Loop through the recent videos until we find one that isn't a Short
-            for (const item of data.items) {
-                const videoId = item.snippet.resourceId.videoId;
-                const checkShort = await isShort(videoId);
-                
-                if (!checkShort) {
-                    targetVideoId = videoId;
-                    break; // Found the most recent regular video, stop looking
-                }
-                console.log(`Skipped Short: ${videoId}`);
-            }
-
-            if (targetVideoId) {
-                fs.writeFileSync('latest-video.json', JSON.stringify({ videoId: targetVideoId }));
-                console.log(`Successfully saved regular video ID: ${targetVideoId}`);
-            } else {
-                console.log('All recent videos evaluated were Shorts.');
-            }
-        } else {
-            console.log('No videos found.');
+        if (!playlistData.items || playlistData.items.length === 0) {
+            console.log('No videos found in playlist.');
+            return;
         }
+
+        // Gather the video IDs to check their details all at once
+        const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId).join(',');
+
+        // 2. Ask YouTube for the durations of all these videos
+        const videoDetailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${GOOGLE_YOUTUBE_API_KEY}`;
+        const videoResponse = await fetch(videoDetailsUrl);
+        if (!videoResponse.ok) throw new Error(`Video Details API error! status: ${videoResponse.status}`);
+        const videoData = await videoResponse.json();
+
+        let targetVideoId = null;
+
+        // 3. Loop through the videos in their original order
+        for (const playlistItem of playlistData.items) {
+            const vId = playlistItem.snippet.resourceId.videoId;
+            const details = videoData.items.find(v => v.id === vId);
+            
+            if (details) {
+                const duration = details.contentDetails.duration; // Example: "PT15M30S" or "PT45S"
+                
+                // Shorts are always less than a minute. YouTube duration strings for under a minute 
+                // look like "PT45S" (no 'M' for minutes or 'H' for hours).
+                const isShort = !duration.includes('M') && !duration.includes('H');
+
+                if (!isShort) {
+                    targetVideoId = vId;
+                    break; // Found our newest long-form video! Stop the loop.
+                } else {
+                    console.log(`Skipped Short: ${vId} (Duration: ${duration})`);
+                }
+            }
+        }
+
+        if (targetVideoId) {
+            fs.writeFileSync('latest-video.json', JSON.stringify({ videoId: targetVideoId }));
+            console.log(`Successfully saved regular video ID: ${targetVideoId}`);
+        } else {
+            console.log('All 10 recent videos evaluated were Shorts.');
+        }
+
     } catch (error) {
-        console.error('Error fetching YouTube data:', error);
+        console.error('Error handling YouTube data:', error);
         process.exit(1);
     }
 }
