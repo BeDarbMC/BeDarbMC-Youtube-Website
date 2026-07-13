@@ -3,7 +3,7 @@ const fs = require('fs');
 const GOOGLE_YOUTUBE_API_KEY = process.env.GOOGLE_YOUTUBE_API_KEY;
 const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
 // Fetch 5 videos instead of 1 to ensure we find a long-form video if you uploaded Shorts recently
-const URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=5&key=${GOOGLE_YOUTUBE_API_KEY}`;
+const URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=8&key=${GOOGLE_YOUTUBE_API_KEY}`;
 
 async function isShort(videoId) {
     try {
