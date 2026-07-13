@@ -3,8 +3,19 @@ const fs = require('fs');
 const GOOGLE_YOUTUBE_API_KEY = process.env.GOOGLE_YOUTUBE_API_KEY;
 const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
 
-// 1. Fetch the last 10 videos from your upload playlist
 const PLAYLIST_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=10&key=${GOOGLE_YOUTUBE_API_KEY}`;
+
+// Helper function to turn YouTube's "PT1M30S" style strings into raw total seconds
+function parseISO8601Duration(durationString) {
+    const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+    const matches = durationString.match(regex);
+    
+    const hours = parseInt(matches[1] || 0, 10);
+    const minutes = parseInt(matches[2] || 0, 10);
+    const seconds = parseInt(matches[3] || 0, 10);
+    
+    return (hours * 3600) + (minutes * 60) + seconds;
+}
 
 async function fetchLatestVideo() {
     try {
@@ -17,10 +28,8 @@ async function fetchLatestVideo() {
             return;
         }
 
-        // Gather the video IDs to check their details all at once
         const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId).join(',');
 
-        // 2. Ask YouTube for the durations of all these videos
         const videoDetailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${GOOGLE_YOUTUBE_API_KEY}`;
         const videoResponse = await fetch(videoDetailsUrl);
         if (!videoResponse.ok) throw new Error(`Video Details API error! status: ${videoResponse.status}`);
@@ -28,38 +37,23 @@ async function fetchLatestVideo() {
 
         let targetVideoId = null;
 
-        // 3. Loop through the videos in their original order
-      for (let i = playlistData.items.length - 1; i >= 0; i--) {
-            const playlistItem = playlistData.items[i];
+        // Loop forward (from absolute newest to oldest)
+        for (const playlistItem of playlistData.items) {
             const vId = playlistItem.snippet.resourceId.videoId;
             const details = videoData.items.find(v => v.id === vId);
             
             if (details) {
-                const duration = details.contentDetails.duration;
+                const durationRaw = details.contentDetails.duration;
+                const totalSeconds = parseISO8601Duration(durationRaw);
                 
-                // Shorts are always under a minute (no M or H in the duration tag)
-                const isShort = !duration.includes('M') && !duration.includes('H');
+                // If a video is 60 seconds or less, YouTube classifies it as a Short.
+                const isShort = totalSeconds <= 60;
 
                 if (!isShort) {
                     targetVideoId = vId;
-                    break; // Found our absolute newest long-form video! Stop the loop.
+                    break; // Found the absolute newest long-form video! Stop here.
                 } else {
-                    console.log(`Skipped Short: ${vId} (Duration: ${duration})`);
-                }
-            }
-            
-            if (details) {
-                const duration = details.contentDetails.duration; // Example: "PT15M30S" or "PT45S"
-                
-                // Shorts are always less than a minute. YouTube duration strings for under a minute 
-                // look like "PT45S" (no 'M' for minutes or 'H' for hours).
-                const isShort = !duration.includes('M') && !duration.includes('H');
-
-                if (!isShort) {
-                    targetVideoId = vId;
-                    break; // Found our newest long-form video! Stop the loop.
-                } else {
-                    console.log(`Skipped Short: ${vId} (Duration: ${duration})`);
+                    console.log(`Skipped Short: ${vId} (Duration: ${totalSeconds}s)`);
                 }
             }
         }
@@ -68,7 +62,7 @@ async function fetchLatestVideo() {
             fs.writeFileSync('latest-video.json', JSON.stringify({ videoId: targetVideoId }));
             console.log(`Successfully saved regular video ID: ${targetVideoId}`);
         } else {
-            console.log('All 10 recent videos evaluated were Shorts.');
+            console.log('All recent videos evaluated were Shorts.');
         }
 
     } catch (error) {
