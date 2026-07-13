@@ -1,9 +1,14 @@
-name: Update Youtube Video Data
+name: Run Youtube Api Key Script
 
 on:
   push:
+    branches:
+      - main
+    paths-ignore:
+      - 'latest-video.json' # Prevents the script from triggering itself in a loop
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '0 */2 * * *' # Checks every 2 hours
+
 jobs:
   run-app:
     runs-on: ubuntu-latest
