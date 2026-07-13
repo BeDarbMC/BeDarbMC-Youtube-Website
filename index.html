@@ -31,7 +31,7 @@
         <p>I (BeDarb) am a family friendly Minecraft Youtuber who occasionally posts Minecraft videos and Shorts. I do not plan on this ever becoming a full-time job, nor do I expect to ever make money from this channel. I do this purely for fun.</p>
         <br><br><br><br><br>
         <h2>MILESTONES</h2>
-        <p>Channel Created: April 24th, 2024<br>100 Subscribers: July 31st, 2024<br>200 Subscribers: April 22nd, 2025<br>250 Subscribers: August 14th, 2025<br>300 Subscribers: March 22nd, 2026<br>400 Subscribers: soon (hopefullu)</p>
+        <p>Channel Created: April 24th, 2024<br>100 Subscribers: July 31st, 2024<br>200 Subscribers: April 22nd, 2025<br>250 Subscribers: August 14th, 2025<br>300 Subscribers: March 22nd, 2026<br>400 Subscribers: soon (hopefully)</p>
         <br><br><br>
         <p>If you have any video suggestions or stuff like that, you can put it in the comments of my videos.</p>
         <br><br><br><br><br>
@@ -45,40 +45,33 @@
     </div> <!-- end of center div-->
 
     <script>
-        const GOOGLE_YOUTUBE_API_KEY = 'processs.env.GOOGLE_YOUTUBE_API_KEY';
-        const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
-       const URL = `https://googleapis.com{PLAYLIST_ID}&key=${GOOGLE_YOUTUBE_API_KEY}`;
-
-        async function fetchLatestVideo() {
-            try {
-                const response = await fetch(URL);
-               if (!response.ok) throw new Error('Network response was not ok');
+    async function loadVideo() {
+        try {
+            // Fetch the static JSON file generated during the build step
+            const response = await fetch('./latest-video.json');
+            const data = await response.json();
             
-                const data = await response.json();
-            
-                if (data.items && data.items.length > 0) {
-                    const videoId = data.items[0].snippet.resourceId.videoId;
-                
-                  document.getElementById('latest-video').innerHTML = `
-                        <iframe 
-                            src="https://youtube.com{videoId}" 
-                            style="position:absolute; top:0; left:0; width:100%; height:100%;" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                           allowfullscreen>
-                        </iframe>
-                    `;
-                } else {
-                   document.getElementById('latest-video').innerText = 'No videos found.';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-               document.getElementById('latest-video').innerText = 'Failed to load video.';
+            if (data.videoId) {
+                document.getElementById('latest-video').innerHTML = `
+                    <iframe 
+                        src="https://www.youtube.com/embed/${data.videoId}" 
+                        style="position:absolute; top:0; left:0; width:100%; height:100%;" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            } else {
+                document.getElementById('latest-video').innerText = 'No video found.';
             }
+        } catch (error) {
+            console.error('Error loading video JSON:', error);
+            document.getElementById('latest-video').innerText = 'Failed to load video.';
         }
+    }
 
-        fetchLatestVideo();
-    </script>
+    loadVideo();
+</script>
 
 </body>
 
