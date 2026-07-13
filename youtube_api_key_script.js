@@ -1,22 +1,20 @@
+const fs = require('fs');
+
 const GOOGLE_YOUTUBE_API_KEY = process.env.GOOGLE_YOUTUBE_API_KEY;
 const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
 
 const PLAYLIST_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=10&key=${GOOGLE_YOUTUBE_API_KEY}`;
 
-// Checks if YouTube natively treats this video ID as a Short page
-async function checkIsShort(videoId) {
-    try {
-        const response = await fetch(`https://www.youtube.com/shorts/${videoId}`, { 
-            method: 'HEAD',
-            redirect: 'manual' // Stop it from following the redirect so we can see what YouTube does
-        });
-        
-        // If it's a regular video, YouTube sends a 302 redirect back to the standard watch page.
-        // If it's a true Short, it returns a 200 status code.
-        return response.status === 200;
-    } catch (error) {
-        return false;
-    }
+// Helper to convert YouTube's "PT1M30S" style strings into raw total seconds
+function parseISO8601Duration(durationString) {
+    const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+    const matches = durationString.match(regex);
+    
+    const hours = parseInt(matches[1] || 0, 10);
+    const minutes = parseInt(matches[2] || 0, 10);
+    const seconds = parseInt(matches[3] || 0, 10);
+    
+    return (hours * 3600) + (minutes * 60) + seconds;
 }
 
 async function fetchLatestVideo() {
@@ -30,20 +28,35 @@ async function fetchLatestVideo() {
             return;
         }
 
+        const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId).join(',');
+
+        // Fetch details for all 10 videos at once safely using the API
+        const videoDetailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${GOOGLE_YOUTUBE_API_KEY}`;
+        const videoResponse = await fetch(videoDetailsUrl);
+        if (!videoResponse.ok) throw new Error(`Video Details API error! status: ${videoResponse.status}`);
+        const videoData = await videoResponse.json();
+
         let targetVideoId = null;
 
-        // Loop through your recent uploads starting from the absolute newest
+        // Loop through videos from newest to oldest
         for (const playlistItem of playlistData.items) {
             const vId = playlistItem.snippet.resourceId.videoId;
+            const details = videoData.items.find(v => v.id === vId);
             
-            console.log(`Checking video: ${vId}...`);
-            const isShort = await checkIsShort(vId);
+            if (details) {
+                const durationRaw = details.contentDetails.duration;
+                const totalSeconds = parseISO8601Duration(durationRaw);
+                
+                // YouTube strictly classifies content <= 60 seconds as a Short.
+                // If it is greater than 60 seconds, it's a true video.
+                const isShort = totalSeconds <= 60;
 
-            if (!isShort) {
-                targetVideoId = vId;
-                break; // Found the absolute newest long-form video! Stop here.
-            } else {
-                console.log(`Skipped Short: ${vId}`);
+                if (!isShort) {
+                    targetVideoId = vId;
+                    break; // Found it! Stop looking.
+                } else {
+                    console.log(`Skipped Short: ${vId} (Duration: ${totalSeconds}s)`);
+                }
             }
         }
 
