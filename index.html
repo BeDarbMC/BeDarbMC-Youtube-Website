@@ -38,17 +38,16 @@
 
         <h2>MOST RECENT VIDEO:</h2>
 
-        <!-- 1. REQUIRED TARGET ELEMENT -->
+        x!-- 1. REQUIRED TARGET ELEMENT -->
             <div id="latest-video" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%;">
                 Loading...
             </div>
     </div> <!-- end of center div-->
 
     <script>
-    // 3. REQUIRED CREDENTIALS (Insert your details here)
-        const API_KEY = 'AIzaSyA9CmlN1BvwJPgyJm6PfjVKcTZLQ_8GKaY';
-        const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; // Must start with 'UU'
-       const URL = `https://googleapis.com{PLAYLIST_ID}&key=${API_KEY}`;
+        const GOOGLE_YOUTUBE_API_KEY = 'processs.env.GOOGLE_YOUTUBE_API_KEY';
+        const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
+       const URL = `https://googleapis.com{PLAYLIST_ID}&key=${GOOGLE_YOUTUBE_API_KEY}`;
 
         async function fetchLatestVideo() {
             try {
@@ -58,10 +57,8 @@
                 const data = await response.json();
             
                 if (data.items && data.items.length > 0) {
-                    // 4. REQUIRED API PATH TO GET THE VIDEO ID
                     const videoId = data.items[0].snippet.resourceId.videoId;
                 
-                    // Inject the player iframe with styling to make it responsive
                   document.getElementById('latest-video').innerHTML = `
                         <iframe 
                             src="https://youtube.com{videoId}" 
@@ -80,7 +77,6 @@
             }
         }
 
-        // Run the function immediately when the script executes
         fetchLatestVideo();
     </script>
 
