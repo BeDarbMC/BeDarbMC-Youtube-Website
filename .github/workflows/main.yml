@@ -26,10 +26,16 @@ jobs:
           GOOGLE_YOUTUBE_API_KEY: ${{ secrets.GOOGLE_YOUTUBE_API_KEY }}
         run: node youtube_api_key_script.js
 
-      - name: Commit and Push Changes
+     - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Pull any recent changes you made so the history matches perfectly
+          git pull --rebase origin main
+          
           git add latest-video.json
           git diff-index --quiet HEAD || git commit -m "Automated update of latest YouTube video ID"
-          git push
+          
+          # Push the clean, combined history line
+          git push origin main
