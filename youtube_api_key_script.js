@@ -1,32 +1,61 @@
-const fs = require('fs');
-
 const GOOGLE_YOUTUBE_API_KEY = process.env.GOOGLE_YOUTUBE_API_KEY;
-// Swapped to Channel ID (Starts with UC)
-const CHANNEL_ID = 'UCryCWFTQNeFBpdxMJcee1bg'; 
+const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
 
-// We tell the API: Order strictly by date, only grab standard videos (medium = 4 to 20 mins, long = 20+ mins)
-const SEARCH_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&order=date&type=video&videoDuration=medium&maxResults=1&key=${GOOGLE_YOUTUBE_API_KEY}`;
+const PLAYLIST_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=10&key=${GOOGLE_YOUTUBE_API_KEY}`;
+
+// Checks if YouTube natively treats this video ID as a Short page
+async function checkIsShort(videoId) {
+    try {
+        const response = await fetch(`https://www.youtube.com/shorts/${videoId}`, { 
+            method: 'HEAD',
+            redirect: 'manual' // Stop it from following the redirect so we can see what YouTube does
+        });
+        
+        // If it's a regular video, YouTube sends a 302 redirect back to the standard watch page.
+        // If it's a true Short, it returns a 200 status code.
+        return response.status === 200;
+    } catch (error) {
+        return false;
+    }
+}
 
 async function fetchLatestVideo() {
     try {
-        const response = await fetch(SEARCH_URL);
-        if (!response.ok) throw new Error(`Search API error! status: ${response.status}`);
-        const data = await response.json();
+        const playlistResponse = await fetch(PLAYLIST_URL);
+        if (!playlistResponse.ok) throw new Error(`Playlist API error! status: ${playlistResponse.status}`);
+        const playlistData = await playlistResponse.json();
         
-        if (data.items && data.items.length > 0) {
-            // Because we asked for order=date and videoDuration=medium, 
-            // the absolute first item is guaranteed to be your newest regular video.
-            const videoId = data.items[0].id.videoId;
-            
-            fs.writeFileSync('latest-video.json', JSON.stringify({ videoId }));
-            console.log(`Successfully locked onto newest long-form video ID: ${videoId}`);
-        } else {
-            // If you don't have videos between 4-20 mins, try removing the duration filter 
-            // and fallback to checking short format explicitly.
-            console.log('No medium/long videos found with current filter.');
+        if (!playlistData.items || playlistData.items.length === 0) {
+            console.log('No videos found in playlist.');
+            return;
         }
+
+        let targetVideoId = null;
+
+        // Loop through your recent uploads starting from the absolute newest
+        for (const playlistItem of playlistData.items) {
+            const vId = playlistItem.snippet.resourceId.videoId;
+            
+            console.log(`Checking video: ${vId}...`);
+            const isShort = await checkIsShort(vId);
+
+            if (!isShort) {
+                targetVideoId = vId;
+                break; // Found the absolute newest long-form video! Stop here.
+            } else {
+                console.log(`Skipped Short: ${vId}`);
+            }
+        }
+
+        if (targetVideoId) {
+            fs.writeFileSync('latest-video.json', JSON.stringify({ videoId: targetVideoId }));
+            console.log(`Successfully saved regular video ID: ${targetVideoId}`);
+        } else {
+            console.log('All recent videos evaluated were Shorts.');
+        }
+
     } catch (error) {
-        console.error('Error handling YouTube Search API:', error);
+        console.error('Error handling YouTube data:', error);
         process.exit(1);
     }
 }
