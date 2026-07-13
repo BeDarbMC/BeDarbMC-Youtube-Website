@@ -29,9 +29,24 @@ async function fetchLatestVideo() {
         let targetVideoId = null;
 
         // 3. Loop through the videos in their original order
-        for (const playlistItem of playlistData.items) {
+      for (let i = playlistData.items.length - 1; i >= 0; i--) {
+            const playlistItem = playlistData.items[i];
             const vId = playlistItem.snippet.resourceId.videoId;
             const details = videoData.items.find(v => v.id === vId);
+            
+            if (details) {
+                const duration = details.contentDetails.duration;
+                
+                // Shorts are always under a minute (no M or H in the duration tag)
+                const isShort = !duration.includes('M') && !duration.includes('H');
+
+                if (!isShort) {
+                    targetVideoId = vId;
+                    break; // Found our absolute newest long-form video! Stop the loop.
+                } else {
+                    console.log(`Skipped Short: ${vId} (Duration: ${duration})`);
+                }
+            }
             
             if (details) {
                 const duration = details.contentDetails.duration; // Example: "PT15M30S" or "PT45S"
