@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'latest-video.json' # Prevents the script from triggering itself in a loop
+      - 'latest-video.json'
   schedule:
-    - cron: '0 */2 * * *' # Checks every 2 hours
+    - cron: '0 */2 * * *'
 
 jobs:
   run-app:
@@ -26,7 +26,7 @@ jobs:
           GOOGLE_YOUTUBE_API_KEY: ${{ secrets.GOOGLE_YOUTUBE_API_KEY }}
         run: node youtube_api_key_script.js
 
-- name: Commit and Push Changes
+      - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Automated update of latest YouTube video ID"
