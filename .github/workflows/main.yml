@@ -1,0 +1,35 @@
+name: Run Youtube Api Key Script
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'latest-video.json' # Prevents the script from triggering itself in a loop
+  schedule:
+    - cron: '0 */2 * * *' # Checks every 2 hours
+
+jobs:
+  run-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Script
+        env:
+          GOOGLE_YOUTUBE_API_KEY: ${{ secrets.GOOGLE_YOUTUBE_API_KEY }}
+        run: node youtube_api_key_script.js
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add latest-video.json
+          git diff-index --quiet HEAD || git commit -m "Automated update of latest YouTube video ID"
+          git push
