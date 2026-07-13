@@ -1,17 +1,20 @@
-name: Run Script with Secret
+name: Run Youtube Api Key Script
 
 on: [push]
 
 jobs:
-  build:
+  run-app:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout repository code
         uses: actions/checkout@v4
 
-      - name: Run Application Step
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-node-version: '20'
+
+      - name: Run Script
         env:
-          # This maps your GitHub secret to an environment variable your app can read
-        YOUTUBE_API_KEY: ${{ secrets.GOOGLE_YOUTUBE_API_KEY }} 
-        run: |
-          python my_script.py
+          GOOGLE_YOUTUBE_API_KEY: ${{ secrets.GOOGLE_YOUTUBE_API_KEY }}
+        run: node youtube_api_key_script.js
