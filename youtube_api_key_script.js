@@ -4,7 +4,7 @@ const GOOGLE_YOUTUBE_API_KEY = process.env.GOOGLE_YOUTUBE_API_KEY;
 const PLAYLIST_ID = 'UUryCWFTQNeFBpdxMJcee1bg'; 
 
 // Fetch the last 10 videos from your upload playlist
-const PLAYLIST_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=10&key=${GOOGLE_YOUTUBE_API_KEY}`;
+const PLAYLIST_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=40&key=${GOOGLE_YOUTUBE_API_KEY}`;
 
 // Perfect helper to parse any YouTube ISO 8601 duration safely into seconds
 function parseISO8601Duration(durationString) {
