@@ -21,10 +21,10 @@
 <body>
     <div class="center">
 
-        <h1 style="font-size: 10em; color: #000075;">BeDarb</h1>
-        <br><br>
+        <h1>BeDarb</h1>
+        <br>
         <a target="blank" href="https://www.youtube.com/@BeDarbMC">
-            <img id="logo" src="images/yt-logo.png" alt="BeDarbMC Youtube Channel Logo (Link to Channel)" width="600">
+            <img id="logo" src="images/yt-logo.png" alt="BeDarbMC Youtube Channel Logo (Link to Channel)" width="80%">
         </a>
         <br><br>
         <h2>Who Am I?</h2>
@@ -47,7 +47,6 @@
     <script>
     async function loadVideo() {
         try {
-            // Fetch the static JSON file generated during the build step
             const response = await fetch('./latest-video.json');
             const data = await response.json();
             

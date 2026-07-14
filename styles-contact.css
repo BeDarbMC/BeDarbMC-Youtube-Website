@@ -55,6 +55,11 @@ table {
 
 /* ---------- This is the beginning of my SSB Contact Web Page Project ------------ */
 
+:root {
+	--primary-bg-color: rgba(0, 150, 178, .75);
+	--primary-outline-color: #000075;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -68,33 +73,29 @@ html, body {
 }
 
 .center {
-    width: 800px;
+    width: 50%;
+	min-width: 300px;
+	max-width: 800px;
 	padding: 2%;
     margin: 100px auto;
- 	background: rgba(0, 150, 178, .75); /*this uses opacity of 75% for the background color*/
+ 	background: var(--primary-bg-color);
 	text-align: center;
-	border: 4px solid #000075;
-}
-
-.banana {
-	font-size: 4em;
-	color: #ffff00;
+	border: 4px solid var(--primary-outline-color);
 }
    
 #logo {
     margin-bottom: 16px;
-	border: 3px solid #000075;
+	border: 3px solid var(--primary-outline-color);
 	text-align: center;
 }
 
 h1 {
 	/* FONT-FAMILY GOES HERE CHOOSE FROM TYPEKIT OR GOOGLE FONTS */
-	font-size: 2em;
-    margin: 0px auto 10px auto;
-    color: #2bff00;
+	font-size: 10em;
+	margin: 0px auto 10px auto;
+	color: #000075;
 	font-family: "Google Sans", sans-serif;
-  	font-optical-sizing: auto;
-  	
+  	/* font-optical-sizing: auto; */
   	font-style: normal;
 }
 
@@ -146,4 +147,23 @@ p {
 	font-family: "Google Sans", sans-serif;
   	font-optical-sizing: auto; 	
   	font-style: normal;
+}
+
+/* media queries */
+
+@media only screen and (max-width: 1200px) {
+	h1 {
+	font-size: 8em;
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	h1 {
+	font-size: 6em;
+	}
+}
+@media only screen and (max-width: 650px) {
+	h1 {
+	font-size: 5em;
+	}
 }
