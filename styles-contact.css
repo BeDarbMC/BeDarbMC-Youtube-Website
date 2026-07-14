@@ -87,11 +87,13 @@ html, body {
 .container {
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
+	align-content: center;
 
 	.left-center {
     	width: 40%;
 		padding: 2%;
-    	margin: 100px auto;
+    	margin: 20px 20px;
  		background: rgba(0, 150, 178, .40);
 		text-align: left;
 		border: 4px solid var(--primary-outline-color);
@@ -100,7 +102,7 @@ html, body {
 	.right-center {
     	width: 40%;
 		padding: 2%;
-    	margin: 100px auto;
+    	margin: 20px 20px;
  		background: rgba(0, 150, 178, .40);
 		text-align: right;
 		border: 4px solid var(--primary-outline-color);
@@ -189,5 +191,20 @@ p {
 @media only screen and (max-width: 650px) {
 	h1 {
 	font-size: 5em;
+	}
+}
+
+@media only screen and (max-width: 1614px) { 
+	.container {
+		justify-content: center;
+		
+		.left-center {
+			width: 80%;
+		}
+	
+		.right-center{
+			width: 80%;
+			text-align: left;
+		}
 	}
 }
