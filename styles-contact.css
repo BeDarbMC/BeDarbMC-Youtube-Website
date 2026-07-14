@@ -60,22 +60,103 @@ table {
 	--primary-outline-color: #000075;
 }
 
+@mixin clearfix {
+	&:after {
+		display: table;
+		clear: both;
+	}
+}
+
+html {
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body {
+	background-color: steelblue;
+	min-height: 100%;
+}
+
+a {
+	text-decoration: none;
+	color: inherit
+}
+
+.main-header {
+	background-color: #000025;
+	padding: 5px 40px 10px 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* @media (min-width: 1025px) {
+	.main-header {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+} */
+
+.name {
+	color: white;
+	font-size: 1.35em;
+	margin: 0;
+}
+
+.header-logo {
+	justify-self: flex-start;
+}
+
+.header-link {
+	justify-self: flex-end;
+}
+
+a {
+	text-align: center;
+	display: block;
+	padding: 10px 15px;
+}
+
+.main-nav {
+	margin: 0;
+	list-style-type: none;
+	display: flex;
+
+}
+
+a {
+	text-align: center;
+	display: inline-block;
+	font-family: "Google Sans", sans-serif;
+	padding: 10px 15px;
+	font-size: 1.5em;
+	color: #ffff00;
+	text-transform: uppercase;
+	margin: 0px 10px;
+}
+
 html, body {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  background-image: url("images/Background.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	background-image: url("images/Background.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
 }
 
 .center {
     width: 50%;
 	min-width: 300px;
-	max-width: 800px;
+	max-width: 1000px;
 	padding: 2%;
     margin: 100px auto;
  	background: var(--primary-bg-color);
@@ -91,7 +172,7 @@ html, body {
 	align-content: center;
 
 	.left-center {
-    	width: 40%;
+    	width: 45%;
 		padding: 2%;
     	margin: 20px 20px;
  		background: rgba(0, 150, 178, .40);
@@ -100,7 +181,7 @@ html, body {
 	}
 
 	.right-center {
-    	width: 40%;
+    	width: 45%;
 		padding: 2%;
     	margin: 20px 20px;
  		background: rgba(0, 150, 178, .40);
@@ -194,10 +275,10 @@ p {
 	}
 }
 
-@media only screen and (max-width: 1614px) { 
+@media only screen and (max-width: 1755px) { 
 	.container {
 		justify-content: center;
-		
+
 		.left-center {
 			width: 80%;
 		}
@@ -207,4 +288,8 @@ p {
 			text-align: left;
 		}
 	}
+}
+
+@media only screen and (max-width: 1024) {
+
 }
