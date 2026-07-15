@@ -30,7 +30,7 @@ time, mark, audio, video {
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-	display: block;
+	display:	 block;
 }
 body {
 	line-height: 1;
@@ -94,14 +94,12 @@ a {
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-}
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
 
-/* @media (min-width: 1025px) {
-	.main-header {
-		flex-direction: row;
-		justify-content: space-between;
-	}
-} */
+}
 
 .name {
 	color: white;
@@ -164,6 +162,10 @@ html, body {
 	border: 4px solid var(--primary-outline-color);
 }
 
+.iframe-yt-rankings {
+	width: 672px;
+	height: 378px;
+}
 
 .container {
 	display: flex;
@@ -197,6 +199,14 @@ html, body {
 .egg-hunt {
 	font-weight: 800;
 	color: #e5e5e5;
+}
+
+.ranking-text {
+	font-size: 4em;
+}
+
+.ranking-dates {
+	font-size: 3em;
 }
 
 .link {
@@ -242,6 +252,8 @@ h3 {
   	font-style: normal;
 }
 
+
+
 h4 {
 	color: #2bff00;
 	font-family: "Google Sans", sans-serif;
@@ -275,23 +287,6 @@ p {
 
 /* media queries */
 
-@media only screen and (max-width: 1200px) {
-	h1 {
-	font-size: 8em;
-	}
-}
-
-@media only screen and (max-width: 900px) {
-	h1 {
-	font-size: 6em;
-	}
-}
-@media only screen and (max-width: 650px) {
-	h1 {
-	font-size: 5em;
-	}
-}
-
 @media only screen and (max-width: 1755px) { 
 	.container {
 		justify-content: center;
@@ -307,14 +302,61 @@ p {
 	}
 }
 
-@media only screen and (max-width: 814px) {
-	.egg-subscribe-text {
+@media only screen and (max-width: 1450px) {
+	.ranking-text {
+		font-size: 3em;
+	}
+	.ranking-dates {
 		font-size: 2em;
+	}
+}
+
+@media only screen and (max-width: 1200px) {
+	h1 {
+	font-size: 8em;
+	}
+	.iframe-yt-rankings {
+		width: 448px;
+		height: 252px;
 	}
 }
 
 @media only screen and (max-width: 1100px) {
 	.link {
 		font-size: 0.6em;
+	}
+	.ranking-text {
+		font-size: 2em;
+	}
+	.ranking-dates {
+		font-size: 1.5em;
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	h1 {
+	font-size: 6em;
+	}
+}
+
+@media only screen and (max-width: 814px) {
+	.egg-subscribe-text {
+		font-size: 2em;
+	}
+	.iframe-yt-rankings {
+		width: 336px;
+		height: 189px;
+	}
+	.ranking-text {
+		font-size: 1.5em;
+	}
+	.ranking-dates {
+		font-size: 1em;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+	h1 {
+	font-size: 5em;
 	}
 }
