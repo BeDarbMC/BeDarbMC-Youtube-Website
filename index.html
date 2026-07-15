@@ -5,7 +5,7 @@
 
     <meta charset=”UTF-8”>
 
-    <meta name="viewport" content="inital-scale-1, maximum-scale=1.0, user-scalable = no">
+    <meta name="viewport" content="width=device-width, inital-scale=1">
 
     <!-- THE TITLE WILL APPEAR IN THE BROWSER WINDOW OR TAB -->
     <title>BeDarbMC</title>
@@ -38,6 +38,7 @@
         <h2>Who Am I?</h2>
         <p>I (BeDarb) am a family friendly Minecraft Youtuber who occasionally posts Minecraft videos and Shorts. I do not plan on this ever becoming a full-time job, nor do I expect to ever make money from this channel. I do this purely for fun.</p>
         <br>
+        <!-- eeeeeeeee -->
 
         <div class="container">
             <div class="left-center">
@@ -58,32 +59,34 @@
     </div> <!-- end of center div-->
 
     <script>
-    async function loadVideo() {
-        try {
-            const response = await fetch('./latest-video.json');
-            const data = await response.json();
-            
-            if (data.videoId) {
-                document.getElementById('latest-video').innerHTML = `
-                    <iframe 
-                        src="https://www.youtube.com/embed/${data.videoId}" 
-                        style="position:absolute; top:0; left:0; width:100%; height:100%;" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                `;
-            } else {
-                document.getElementById('latest-video').innerText = 'No video found.';
-            }
-        } catch (error) {
+        async function loadVideo() {
+            try {
+                const response = await fetch('./latest-video.json');
+                const data = await response.json();
+                
+               if (data.videoId) {
+                    document.getElementById('latest-video').innerHTML = `
+                       <iframe 
+                            src="https://www.youtube.com/embed/${data.videoId}" 
+                           style="position:absolute; top:0; left:0; width:100%; height:100%;" 
+                           frameborder="0" 
+                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                           allowfullscreen>
+                      </iframe>
+                  `;
+                } else {
+                    document.getElementById('latest-video').innerText = 'No video found.';
+                }
+            } catch (error) {
             console.error('Error loading video JSON:', error);
             document.getElementById('latest-video').innerText = 'Failed to load video.';
+            }
         }
-    }
 
-    loadVideo();
-</script>
+        loadVideo();
+    </script>
+
+<!--  -->
 
 </body> 
     
