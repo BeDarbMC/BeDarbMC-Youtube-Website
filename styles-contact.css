@@ -360,3 +360,19 @@ p {
 	font-size: 5em;
 	}
 }
+
+@media only screen and (max-width: 600px) {
+	.iframe-yt-rankings {
+		width: 267px;
+		height: 151px;
+	}
+	.ranking-text {
+		font-size: 1.2em
+	}
+	.ranking-dates {
+		font-size: 0.8em;
+	}
+	h1 {
+	font-size: 4em;
+	}
+}
