@@ -88,7 +88,7 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -409,5 +409,11 @@ p {
 	}
 	h1 {
 	font-size: 4em;
+	}
+}
+
+media only screen and (max-width: 600px) {
+	header-link-1, header-link-3 {
+		flex-shrink: 1.5
 	}
 }
