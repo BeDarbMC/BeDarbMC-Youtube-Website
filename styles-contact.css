@@ -113,6 +113,7 @@ a {
 
 .header-link {
 	justify-self: flex-end;
+	background-color: #000045;
 }
 
 a {
@@ -125,7 +126,10 @@ a {
 	margin: 0;
 	list-style-type: none;
 	display: flex;
+}
 
+.main-nav a:hover {
+	background-color: #222245;
 }
 
 a {
@@ -353,6 +357,10 @@ p {
 	.ranking-dates {
 		font-size: 1em;
 	}
+}
+
+@media only screen and (max-width: 650px) {
+
 }
 
 @media only screen and (max-width: 650px) {
