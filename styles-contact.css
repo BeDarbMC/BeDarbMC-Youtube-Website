@@ -414,6 +414,6 @@ p {
 
 media only screen and (max-width: 600px) {
 	header-link-1, header-link-3 {
-		flex-shrink: 1.5
+		flex-shrink: 1.5;
 	}
 }
