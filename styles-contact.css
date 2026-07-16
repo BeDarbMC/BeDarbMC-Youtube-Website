@@ -88,7 +88,7 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	position: fixed;
 	top: 0;
 	right: 0;
