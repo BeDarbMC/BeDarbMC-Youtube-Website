@@ -56,7 +56,7 @@ table {
 /* ---------- This is the beginning of my SSB Contact Web Page Project ------------ */
 
 :root {
-	--primary-bg-color: rgba(0, 150, 178, .75);
+	--primary-bg-color: rgba(0, 117, 138, 0.75);
 	--primary-outline-color: #000075;
 }
 
@@ -111,21 +111,37 @@ a {
 	justify-self: flex-start;
 }
 
-.header-link {
-	justify-self: flex-end;
-	background-color: #000045;
-}
-
-a {
-	text-align: center;
-	display: block;
-	padding: 10px 15px;
-}
-
 .main-nav {
 	margin: 0;
 	list-style-type: none;
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.main-nav li {
+    display: contents;
+}
+
+.header-link-1 {
+	background-color: #000045;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	order: 0;
+}
+
+.header-link-2 {
+	background-color: #000045;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	order: 0;
+}
+
+.header-link-3 {
+	background-color: #000045;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	order: 0;
 }
 
 .main-nav a:hover {
@@ -139,7 +155,6 @@ a {
 	padding: 10px 15px;
 	font-size: 1.5em;
 	color: #ffff00;
-	text-transform: uppercase;
 	margin: 0px 10px;
 }
 
@@ -176,24 +191,24 @@ html, body {
 	justify-content: space-between;
 	flex-wrap: wrap;
 	align-content: center;
+}
 
-	.left-center {
-    	width: 45%;
-		padding: 2%;
-    	margin: 20px 20px;
- 		background: rgba(0, 150, 178, .40);
-		text-align: left;
-		border: 4px solid var(--primary-outline-color);
-	}
+.left-center {
+	width: 45%;
+	padding: 2%;
+	margin: 20px 20px;
+	background: rgba(0, 150, 178, .40);
+	text-align: left;
+	border: 4px solid var(--primary-outline-color);
+}
 
-	.right-center {
-    	width: 45%;
-		padding: 2%;
-    	margin: 20px 20px;
- 		background: rgba(0, 150, 178, .40);
-		text-align: right;
-		border: 4px solid var(--primary-outline-color);
-	}
+.right-center {
+	width: 45%;
+	padding: 2%;
+	margin: 20px 20px;
+	background: rgba(0, 150, 178, .40);
+	text-align: right;
+	border: 4px solid var(--primary-outline-color);
 }
 
 .egg-subscribe-text {
@@ -231,7 +246,7 @@ h1 {
 	/* FONT-FAMILY GOES HERE CHOOSE FROM TYPEKIT OR GOOGLE FONTS */
 	font-size: 10em;
 	margin: 0px auto 10px auto;
-	color: #000075;
+	color: #000050;
 	font-family: "Google Sans", sans-serif;
   	/* font-optical-sizing: auto; */
   	font-style: normal;
@@ -283,7 +298,7 @@ p {
 	/* FONT-FAMILY GOES HERE CHOOSE FROM TYPEKIT OR GOOGLE FONTS */
 	font-size: 1.2em;
     line-height: 1.6;
-    color: #fff;
+    color: #ffffff;
 	font-family: "Google Sans", sans-serif;
   	font-optical-sizing: auto; 	
   	font-style: normal;
@@ -359,8 +374,10 @@ p {
 	}
 }
 
-@media only screen and (max-width: 650px) {
-
+@media only screen and (max-width: 708px) {
+	.header-link-2 {
+		order: 1;
+	}
 }
 
 @media only screen and (max-width: 650px) {
