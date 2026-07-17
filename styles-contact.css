@@ -131,26 +131,29 @@ a {
 
 .header-link-1 {
 	background-color: #000045;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	order: 0;
 	text-decoration: none;
+	font-size: 24px;
 }
 
 .header-link-2 {
 	background-color: #000045;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	order: 0;
 	text-decoration: none;
+	font-size: 24px;
 }
 
 .header-link-3 {
 	background-color: #000045;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	order: 0;
 	text-decoration: none;
+	font-size: 24px;
 }
 
 .main-nav a:hover {
@@ -384,10 +387,11 @@ p {
 	}
 }
 
-@media only screen and (max-width: 708px) {
-	.header-link-2 {
-		order: 1;
+@media only screen and (max-width: 663px) {
+	.header-link-1, .header-link-2, .header-link-3 {
+		font-size: 18px;
 	}
+	
 }
 
 @media only screen and (max-width: 650px) {
@@ -409,5 +413,14 @@ p {
 	}
 	h1 {
 	font-size: 4em;
+	}
+}
+
+@media only screen and (max-width: 582px) {
+	.header-link-1, .header-link-2, .header-link-3 {
+		font-size: 14px;
+	}
+	.header-link-2 {
+		order: 1;
 	}
 }
